@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>W5 · Bridge 1 — Preparação 5 Dias</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green:       #1a5c1a;
+    --green-mid:   #2d7a2d;
+    --green-light: #e8f5e8;
+    --green-pale:  #f4faf4;
+    --amber:       #b85c00;
+    --amber-light: #fff4e6;
+    --navy:        #1a2a5c;
+    --navy-light:  #e8eef8;
+    --teal:        #1a4a4a;
+    --teal-light:  #e8f5f5;
+    --red:         #8b1a1a;
+    --red-light:   #fdecea;
+    --gray:        #f4f4f4;
+    --gray-mid:    #e0e0e0;
+    --text:        #1a1a1a;
+    --text-muted:  #555;
+    --white:       #ffffff;
+    --radius:      12px;
+    --shadow:      0 2px 16px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #f0f4f0; color: var(--text); min-height: 100vh; }
+
+  /* TOP HEADER */
+  .top-header { background: var(--green); color: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
+  .top-header-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: #c8e6c8; }
+  .logo span { color: white; font-size: 1.3rem; }
+  .week-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; color: #c8e6c8; }
+
+  /* DAY TABS */
+  .day-tabs { background: white; border-bottom: 2px solid var(--gray-mid); position: sticky; top: 57px; z-index: 99; }
+  .day-tabs-inner { max-width: 900px; margin: 0 auto; display: flex; overflow-x: auto; scrollbar-width: none; }
+  .day-tabs-inner::-webkit-scrollbar { display: none; }
+  .tab-btn { flex: 1; min-width: 110px; padding: 14px 10px; border: none; background: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; border-bottom: 3px solid transparent; transition: all 0.2s; white-space: nowrap; }
+  .tab-btn:hover { color: var(--green); }
+  .tab-btn.active { color: var(--green); border-bottom-color: var(--green); }
+  .tab-btn .day-num { display: block; font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; color: inherit; margin-bottom: 2px; }
+
+  /* MAIN */
+  .main { max-width: 900px; margin: 0 auto; padding: 28px 20px 80px; }
+  .day-panel { display: none; }
+  .day-panel.active { display: block; }
+
+  /* CARD */
+  .card { background: white; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; }
+  .card-header { padding: 16px 22px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--gray-mid); }
+  .card-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+  .card-title { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--text); }
+  .card-subtitle { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; margin-top: 1px; }
+  .card-body { padding: 20px 22px; }
+  .card-green .card-header { background: var(--green-pale); }
+  .card-green .card-icon { background: var(--green-light); }
+  .card-amber .card-header { background: #fffaf5; }
+  .card-amber .card-icon { background: var(--amber-light); }
+  .card-navy .card-header { background: var(--navy-light); }
+  .card-navy .card-icon { background: #d0dcf0; }
+  .card-teal .card-header { background: var(--teal-light); }
+  .card-teal .card-icon { background: #c0dede; }
+  .card-red .card-header { background: var(--red-light); }
+  .card-red .card-icon { background: #f5baba; }
+
+  /* DAY INTRO */
+  .day-intro { background: var(--green); border-radius: var(--radius); padding: 24px 28px; margin-bottom: 20px; color: white; display: flex; align-items: flex-start; gap: 20px; }
+  .day-number { font-family: 'DM Serif Display', serif; font-size: 3.5rem; line-height: 1; color: rgba(255,255,255,0.3); flex-shrink: 0; }
+  .day-intro h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 6px; }
+  .day-intro p { font-size: 0.9rem; color: rgba(255,255,255,0.8); line-height: 1.5; }
+  .day-meta { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .day-pill { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 3px 12px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; color: #c8e6c8; }
+
+  /* OUTCOMES */
+  .outcomes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media(max-width:600px){ .outcomes-grid { grid-template-columns: 1fr; } }
+  .outcome-item { display: flex; align-items: flex-start; gap: 8px; font-size: 0.87rem; line-height: 1.4; }
+  .outcome-check { width: 20px; height: 20px; border-radius: 50%; background: var(--green-light); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; flex-shrink: 0; margin-top: 1px; }
+
+  /* CONTRAST */
+  .contrast-box { background: #fffaf5; border: 1px solid #f0d0a0; border-left: 4px solid var(--amber); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 16px; }
+  .contrast-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; color: var(--amber); text-transform: uppercase; margin-bottom: 10px; }
+  .contrast-table { width: 100%; border-collapse: collapse; }
+  .contrast-table td { padding: 7px 10px; font-size: 0.84rem; border-bottom: 1px solid rgba(185,92,0,0.1); }
+  .contrast-table td:first-child { color: var(--navy); font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 0.79rem; width: 44%; }
+  .contrast-table td:nth-child(2) { color: var(--text-muted); font-size: 0.75rem; width: 12%; text-align: center; }
+  .contrast-table td:last-child { color: var(--green); font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 0.79rem; }
+
+  /* VOCAB */
+  .vocab-grid { display: flex; flex-direction: column; gap: 8px; }
+  .vocab-item { border: 1px solid var(--gray-mid); border-radius: 8px; padding: 11px 16px; display: grid; grid-template-columns: 160px 140px 1fr; gap: 8px; align-items: start; transition: border-color 0.2s; }
+  .vocab-item:hover { border-color: var(--green); }
+  @media(max-width:620px){ .vocab-item { grid-template-columns: 1fr; } }
+  .vocab-word { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--green); }
+  .vocab-pt { font-size: 0.82rem; color: var(--text-muted); font-style: italic; padding-top: 3px; }
+  .vocab-sentence { font-size: 0.83rem; color: var(--text); line-height: 1.4; padding-top: 2px; }
+  .vocab-sentence em { font-style: normal; font-weight: 600; color: var(--green); }
+
+  /* PHRASE CARDS - Day 4 & 5 */
+  .phrase-card { background: var(--navy-light); border-radius: 10px; padding: 14px 18px; margin-bottom: 10px; border-left: 4px solid var(--navy); }
+  .phrase-en { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--navy); font-weight: 600; margin-bottom: 4px; }
+  .phrase-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .phrase-tag { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 10px; }
+  .tag-tobe { background: var(--green-light); color: var(--green); }
+  .tag-do { background: var(--amber-light); color: var(--amber); }
+  .phrase-practice { margin-top: 10px; }
+
+  /* EXERCISE */
+  .exercise-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; color: var(--navy); text-transform: uppercase; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--navy-light); }
+  .ex-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; font-size: 0.88rem; }
+  .ex-num { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--text-muted); min-width: 22px; padding-top: 8px; font-size: 0.78rem; }
+  .ex-content { flex: 1; }
+  .ex-content p { margin-bottom: 6px; line-height: 1.4; color: var(--text); }
+  input[type="text"], textarea { width: 100%; border: 1.5px solid var(--gray-mid); border-radius: 6px; padding: 8px 12px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--text); background: var(--gray); transition: border-color 0.2s, background 0.2s; resize: vertical; }
+  input[type="text"]:focus, textarea:focus { outline: none; border-color: var(--green); background: white; }
+  .inline-input { display: inline-block; width: 180px; border: none; border-bottom: 2px solid var(--gray-mid); border-radius: 0; background: transparent; padding: 2px 6px; font-size: 0.88rem; }
+  .inline-input:focus { outline: none; border-bottom-color: var(--green); background: transparent; }
+
+  /* GRAMMAR BOX */
+  .grammar-box { background: var(--navy-light); border-radius: 8px; padding: 16px 18px; margin-bottom: 14px; }
+  .grammar-box h4 { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; color: var(--navy); text-transform: uppercase; margin-bottom: 10px; }
+  .rule-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; font-size: 0.84rem; flex-wrap: wrap; }
+  .rule-affirm { font-family: 'JetBrains Mono', monospace; color: var(--green); font-size: 0.8rem; min-width: 160px; }
+  .rule-arrow { color: var(--text-muted); font-size: 0.8rem; }
+  .rule-neg { font-family: 'JetBrains Mono', monospace; color: var(--red); font-size: 0.8rem; }
+  .rule-q { font-family: 'JetBrains Mono', monospace; color: var(--amber); font-size: 0.8rem; }
+
+  /* CALLOUT */
+  .callout { border-left: 4px solid; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 14px; font-size: 0.85rem; line-height: 1.5; }
+  .callout-green { border-color: var(--green); background: var(--green-light); color: var(--green); }
+  .callout-amber { border-color: var(--amber); background: var(--amber-light); color: var(--amber); }
+  .callout-navy  { border-color: var(--navy);  background: var(--navy-light);  color: var(--navy); }
+  .callout-teal  { border-color: var(--teal);  background: var(--teal-light);  color: var(--teal); }
+  .callout strong { font-weight: 700; }
+  .callout span { color: var(--text); }
+
+  /* DIALOGUE */
+  .dialogue-box { background: var(--gray); border-radius: 8px; padding: 16px 18px; margin-bottom: 14px; font-size: 0.87rem; line-height: 1.8; }
+  .dialogue-box strong { color: var(--navy); }
+
+  /* AUDIO */
+  .audio-card { border: 1.5px solid var(--gray-mid); border-radius: 10px; padding: 16px 18px; margin-bottom: 14px; }
+  .audio-card:hover { border-color: var(--teal); }
+  .audio-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .audio-badge { background: var(--teal); color: white; border-radius: 6px; padding: 3px 10px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; }
+  .audio-name { font-weight: 600; font-size: 0.9rem; }
+  .audio-instructions { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px; line-height: 1.4; }
+  audio { width: 100%; height: 36px; margin-bottom: 10px; }
+
+  /* SCRIPT TOGGLE */
+  .script-toggle { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .btn-script { background: var(--teal-light); border: 1.5px solid var(--teal); color: var(--teal); border-radius: 6px; padding: 5px 14px; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-script:hover { background: var(--teal); color: white; }
+  .script-box { display: none; background: #f8fcfc; border: 1px solid var(--teal-light); border-radius: 8px; padding: 14px 18px; margin-bottom: 14px; font-size: 0.83rem; line-height: 1.7; color: var(--text-muted); }
+  .script-box.open { display: block; }
+  .script-box strong { color: var(--teal); }
+
+  /* MINI PROJECT */
+  .mini-project-box { background: linear-gradient(135deg, var(--green-pale), var(--navy-light)); border: 1.5px solid var(--green-mid); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 14px; }
+  .mini-project-box h4 { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--green); margin-bottom: 8px; }
+  .mini-project-box p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5; }
+
+  /* SAVE BAR */
+  .save-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1.5px solid var(--gray-mid); padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; z-index: 200; }
+  .save-info { font-size: 0.78rem; color: var(--text-muted); }
+  .save-info strong { color: var(--green); }
+  .btn { padding: 9px 22px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+  .btn-green { background: var(--green); color: white; }
+  .btn-green:hover { background: var(--green-mid); }
+  .btn-outline { background: transparent; border: 1.5px solid var(--gray-mid); color: var(--text-muted); }
+  .btn-outline:hover { border-color: var(--green); color: var(--green); }
+  .btn-pdf { background: var(--navy); color: white; }
+  .btn-pdf:hover { background: #2a3a7c; }
+
+  @media print {
+    .day-tabs, .save-bar, .top-header, .btn-script { display: none !important; }
+    .day-panel { display: block !important; page-break-before: always; }
+    .day-panel:first-child { page-break-before: avoid; }
+    .script-box { display: block !important; }
+    body { background: white; }
+    .main { padding: 0; }
+  }
+
+  /* ── MOBILE ─────────────────────────────────────────── */
+  @media (max-width: 600px) {
+
+    /* Header */
+    .top-header-inner { padding: 10px 14px; }
+    .logo { font-size: 0.9rem; }
+    .logo span { font-size: 1rem; }
+    .week-badge { font-size: 0.68rem; padding: 3px 10px; }
+
+    /* Tabs */
+    .day-tabs { top: 48px; }
+    .tab-btn { min-width: 64px; padding: 10px 6px; font-size: 0.62rem; }
+    .tab-btn .day-num { font-size: 1.1rem; }
+
+    /* Main */
+    .main { padding: 16px 12px 90px; }
+
+    /* Day intro */
+    .day-intro { padding: 18px 16px; gap: 12px; }
+    .day-number { font-size: 2.4rem; }
+    .day-intro h2 { font-size: 1.1rem; }
+    .day-intro p { font-size: 0.82rem; }
+    .day-pill { font-size: 0.65rem; padding: 2px 8px; }
+
+    /* Cards */
+    .card-header { padding: 12px 14px; gap: 10px; }
+    .card-title { font-size: 0.95rem; }
+    .card-subtitle { font-size: 0.7rem; }
+    .card-body { padding: 14px 14px; }
+    .card-icon { width: 30px; height: 30px; font-size: 0.95rem; }
+
+    /* Contrast table — stack on mobile */
+    .contrast-table td { font-size: 0.75rem; padding: 5px 6px; }
+    .contrast-table td:first-child { font-size: 0.73rem; width: auto; }
+    .contrast-table td:last-child { font-size: 0.73rem; }
+    .contrast-table { display: block; }
+    .contrast-table tbody { display: block; }
+    .contrast-table tr { display: grid; grid-template-columns: 1fr 18px 1fr; align-items: center; border-bottom: 1px solid rgba(185,92,0,0.1); }
+    .contrast-table td { border: none; padding: 6px 4px; }
+
+    /* Vocab */
+    .vocab-item { grid-template-columns: 1fr; padding: 10px 12px; gap: 4px; }
+    .vocab-word { font-size: 0.95rem; }
+    .vocab-pt { font-size: 0.78rem; }
+    .vocab-sentence { font-size: 0.78rem; }
+
+    /* Grammar */
+    .grammar-box { padding: 12px 12px; }
+    .rule-row { gap: 6px; font-size: 0.78rem; }
+    .rule-affirm { font-size: 0.72rem; min-width: 120px; }
+    .rule-neg, .rule-q { font-size: 0.72rem; }
+
+    /* Exercises */
+    .ex-item { gap: 6px; font-size: 0.84rem; margin-bottom: 12px; }
+    .ex-content p { font-size: 0.84rem; }
+    input[type="text"] { font-size: 0.84rem; padding: 7px 10px; }
+    textarea { font-size: 0.84rem; }
+
+    /* Inline inputs — full width on mobile */
+    .inline-input { width: 100% !important; display: block; margin-top: 4px; border-bottom: 2px solid var(--gray-mid); }
+
+    /* Dialogue */
+    .dialogue-box { padding: 12px 12px; font-size: 0.82rem; line-height: 1.7; }
+
+    /* Phrase cards */
+    .phrase-card { padding: 12px 12px; }
+    .phrase-en { font-size: 0.78rem; }
+    .phrase-tag { font-size: 0.62rem; }
+
+    /* Callout */
+    .callout { font-size: 0.8rem; padding: 10px 12px; }
+
+    /* Audio button */
+    a[href*="drive.google.com"] {
+      width: 100%;
+      justify-content: center;
+      font-size: 0.82rem;
+      padding: 12px 16px;
+    }
+
+    /* Script box */
+    .script-box { font-size: 0.78rem; padding: 10px 12px; }
+
+    /* Mini project */
+    .mini-project-box { padding: 14px 14px; }
+    .mini-project-box h4 { font-size: 0.92rem; }
+    .mini-project-box p { font-size: 0.8rem; }
+
+    /* Save bar */
+    .save-bar {
+      padding: 10px 12px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .save-info { font-size: 0.72rem; text-align: center; }
+    .save-bar > div { display: flex; gap: 8px; }
+    .btn { flex: 1; padding: 10px 8px; font-size: 0.78rem; text-align: center; }
+
+    /* Exercise label */
+    .exercise-label { font-size: 0.66rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top-header">
+  <div class="top-header-inner">
+    <div class="logo"><span>Talk It Easy</span> · Agro English</div>
+    <div class="week-badge">W5 · Bridge 1</div>
+  </div>
+</header>
+
+<nav class="day-tabs">
+  <div class="day-tabs-inner">
+    <button class="tab-btn active" onclick="showDay(1)"><span class="day-num">1</span>Lugares</button>
+    <button class="tab-btn" onclick="showDay(2)"><span class="day-num">2</span>Negócios</button>
+    <button class="tab-btn" onclick="showDay(3)"><span class="day-num">3</span>Logística</button>
+    <button class="tab-btn" onclick="showDay(4)"><span class="day-num">4</span>Listening</button>
+    <button class="tab-btn" onclick="showDay(5)"><span class="day-num">5</span>Produção</button>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- ══════════════════════ DIA 1 ══════════════════════ -->
+<div class="day-panel active" id="day-1">
+
+  <div class="day-intro">
+    <div class="day-number">1</div>
+    <div class="day-intro-content">
+      <h2>Lugares + Status — To Be vs. Do Verbs</h2>
+      <p>Semana de revisão! Hoje você encontra os dois sistemas juntos pela primeira vez num mesmo diálogo. Leia, observe e anote.</p>
+      <div class="day-meta">
+        <span class="day-pill">📹 Vídeo aula incluído</span>
+        <span class="day-pill">📖 13 palavras novas</span>
+        <span class="day-pill">⏱ 25 minutos</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEARNING OUTCOMES -->
+  <div class="card card-green">
+    <div class="card-header">
+      <div class="card-icon">🎯</div>
+      <div><div class="card-title">O que você vai consolidar esta semana</div><div class="card-subtitle">Learning Outcomes — W5 Bridge 1</div></div>
+    </div>
+    <div class="card-body">
+      <div class="outcomes-grid">
+        <div class="outcome-item"><div class="outcome-check">✓</div><span>Diferenciar <strong>To Be</strong> (quem você é / onde está) e <strong>Do Verbs</strong> (o que você faz)</span></div>
+        <div class="outcome-item"><div class="outcome-check">✓</div><span>Dominar <strong>W-Questions</strong> (Who, What, Where, When) em contextos mistos</span></div>
+        <div class="outcome-item"><div class="outcome-check">✓</div><span>Usar <strong>This is / These are</strong> com negativa e pergunta</span></div>
+        <div class="outcome-item"><div class="outcome-check">✓</div><span>Conduzir um <strong>primeiro contato profissional</strong> misturando identidade e rotina</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTRASTE DIA 1 -->
+  <div class="card card-amber">
+    <div class="card-header">
+      <div class="card-icon">🔄</div>
+      <div><div class="card-title">O grande contraste desta semana</div><div class="card-subtitle">To Be vs. Do Verbs — os dois sistemas juntos</div></div>
+    </div>
+    <div class="card-body">
+      <div class="contrast-box">
+        <div class="contrast-label">To Be = Status · Identidade · Localização &nbsp;|&nbsp; Do Verbs = Ação · Hábito · Rotina</div>
+        <table class="contrast-table">
+          <tr><td>I am at the warehouse.</td><td>+</td><td>I work long hours every day.</td></tr>
+          <tr><td>She is from the production team.</td><td>+</td><td>She works at the headquarters.</td></tr>
+          <tr><td>He isn't available.</td><td>+</td><td>He doesn't drink coffee.</td></tr>
+          <tr><td>Are you the new supplier?</td><td>+</td><td>Do you work in the laboratory?</td></tr>
+        </table>
+      </div>
+      <div class="callout callout-amber"><strong>Chave da semana: </strong><span>Nas frases reais, os dois sistemas aparecem juntos. "I am tired <strong>because</strong> I work long hours." — To Be descreve o estado, Do Verb explica a ação.</span></div>
+    </div>
+  </div>
+
+  <!-- VOCAB DIA 1 -->
+  <div class="card card-green">
+    <div class="card-header">
+      <div class="card-icon">📚</div>
+      <div><div class="card-title">Vocabulário do Dia 1 — Lugares & Status</div><div class="card-subtitle">13 palavras · Leia, traduza mentalmente e diga em voz alta</div></div>
+    </div>
+    <div class="card-body">
+      <div class="vocab-grid">
+        <div class="vocab-item"><div class="vocab-word">warehouse</div><div class="vocab-pt">armazém / depósito</div><div class="vocab-sentence">I am at the <em>warehouse</em> today. We don't work at the office.</div></div>
+        <div class="vocab-item"><div class="vocab-word">laboratory</div><div class="vocab-pt">laboratório</div><div class="vocab-sentence">Do you work in the <em>laboratory</em> or at the farm?</div></div>
+        <div class="vocab-item"><div class="vocab-word">parking lot</div><div class="vocab-pt">estacionamento</div><div class="vocab-sentence">He is at the <em>parking lot</em>. He is not in the meeting room yet.</div></div>
+        <div class="vocab-item"><div class="vocab-word">lobby</div><div class="vocab-pt">saguão / recepção</div><div class="vocab-sentence">The new supplier is at the <em>lobby</em>. Are you ready for the meeting?</div></div>
+        <div class="vocab-item"><div class="vocab-word">airport</div><div class="vocab-pt">aeroporto</div><div class="vocab-sentence">I am at the <em>airport</em>. I don't have time for a coffee break.</div></div>
+        <div class="vocab-item"><div class="vocab-word">meeting room</div><div class="vocab-pt">sala de reunião</div><div class="vocab-sentence">They are in the <em>meeting room</em>. Are they ready for the presentation?</div></div>
+        <div class="vocab-item"><div class="vocab-word">late</div><div class="vocab-pt">atrasado/a</div><div class="vocab-sentence">I am <em>late</em> for the meeting. I don't drink coffee when I am late.</div></div>
+        <div class="vocab-item"><div class="vocab-word">early</div><div class="vocab-pt">adiantado/a · cedo</div><div class="vocab-sentence">I am <em>early</em> today. I always eat breakfast when I am early.</div></div>
+        <div class="vocab-item"><div class="vocab-word">on time</div><div class="vocab-pt">no horário · pontual</div><div class="vocab-sentence">Are you <em>on time</em> for the delivery? Yes, I am.</div></div>
+        <div class="vocab-item"><div class="vocab-word">available</div><div class="vocab-pt">disponível</div><div class="vocab-sentence">Is he <em>available</em> now? No, he isn't. He is in a meeting.</div></div>
+        <div class="vocab-item"><div class="vocab-word">unavailable</div><div class="vocab-pt">indisponível</div><div class="vocab-sentence">She is <em>unavailable</em> today. She works long hours at the warehouse.</div></div>
+        <div class="vocab-item"><div class="vocab-word">online</div><div class="vocab-pt">conectado/a</div><div class="vocab-sentence">Are you <em>online</em>? Yes, I am. I study English online every day.</div></div>
+        <div class="vocab-item"><div class="vocab-word">offline</div><div class="vocab-pt">desconectado/a</div><div class="vocab-sentence">I am <em>offline</em> now. I don't work online on weekends.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 — DIALOGUE -->
+  <div class="card card-navy">
+    <div class="card-header">
+      <div class="card-icon">🎬</div>
+      <div><div class="card-title">Part 1 — The Strategic Meeting</div><div class="card-subtitle">Leia o diálogo · identifique To Be e Do Verbs</div></div>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-navy"><strong>Situação: </strong><span>Um novo fornecedor chega para uma reunião estratégica. O supervisor apresenta a equipe e descobre a rotina do visitante.</span></div>
+      <div class="dialogue-box">
+        <strong>MANAGER:</strong> "Hello! I am the supervisor here. Are you the new supplier from the logistics company?"<br>
+        <strong>VISITOR:</strong> "Yes, I am. My name is Mr. Silva. I am early for the meeting."<br>
+        <strong>MANAGER:</strong> "Great! I am early too. This is my assistant, Laura. She is from the production team."<br>
+        <strong>VISITOR:</strong> "Nice to meet you, Laura. Do you work in the laboratory or in the warehouse?"<br>
+        <strong>ASSISTANT:</strong> "I work at the headquarters, but I am at the warehouse today. Do you drink coffee or tea?"<br>
+        <strong>VISITOR:</strong> "I drink coffee, please. I am a little tired because I work long hours every day."<br>
+        <strong>MANAGER:</strong> "No problem. We are busy, but we have a coffee break now."
+      </div>
+      <div class="exercise-label">Identifique — To Be ou Do Verb? Escreva TB ou DV ao lado</div>
+      <div class="grammar-box">
+        <h4>Examples from the text — identifique cada estrutura</h4>
+        <div class="rule-row"><div class="rule-affirm">I am early for the meeting.</div><div class="rule-arrow">→</div><input type="text" class="inline-input" placeholder="TB ou DV" data-key="d1-id-1" style="width:80px"></div>
+        <div class="rule-row"><div class="rule-affirm">She is from the production team.</div><div class="rule-arrow">→</div><input type="text" class="inline-input" placeholder="TB ou DV" data-key="d1-id-2" style="width:80px"></div>
+        <div class="rule-row"><div class="rule-affirm">Do you work in the laboratory?</div><div class="rule-arrow">→</div><input type="text" class="inline-input" placeholder="TB ou DV" data-key="d1-id-3" style="width:80px"></div>
+        <div class="rule-row"><div class="rule-affirm">I am at the warehouse today.</div><div class="rule-arrow">→</div><input type="text" class="inline-input" placeholder="TB ou DV" data-key="d1-id-4" style="width:80px"></div>
+        <div class="rule-row"><div class="rule-affirm">I work at the headquarters.</div><div class="rule-arrow">→</div><input type="text" class="inline-input" placeholder="TB ou DV" data-key="d1-id-5" style="width:80px"></div>
+        <div class="rule-row"><div class="rule-affirm">I am a little tired.</div><div class="rule-arrow">→</div><input type="text" class="inline-input" placeholder="TB ou DV" data-key="d1-id-6" style="width:80px"></div>
+        <div class="rule-row"><div class="rule-affirm">I work long hours every day.</div><div class="rule-arrow">→</div><input type="text" class="inline-input" placeholder="TB ou DV" data-key="d1-id-7" style="width:80px"></div>
+        <div class="rule-row"><div class="rule-affirm">We have a coffee break now.</div><div class="rule-arrow">→</div><input type="text" class="inline-input" placeholder="TB ou DV" data-key="d1-id-8" style="width:80px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOCAB CHECK DIA 1 -->
+  <div class="card card-green">
+    <div class="card-header">
+      <div class="card-icon">📝</div>
+      <div><div class="card-title">Vocabulary Check — Dia 1</div><div class="card-subtitle">Anote 3 palavras de hoje com sua própria frase</div></div>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-green"><strong>Dica: </strong><span>Escolha palavras que descrevem a SUA realidade de trabalho. Se você trabalha num armazém, escreva sobre ele. Se você é sempre pontual, escreva sobre isso.</span></div>
+      <div class="ex-item"><div class="ex-num">1.</div><div class="ex-content">
+        <p>Word: <input type="text" class="inline-input" placeholder="palavra" data-key="d1-vc1-w" style="width:140px"></p>
+        <p>Definition: <input type="text" placeholder="definição" data-key="d1-vc1-d" style="margin-top:6px"></p>
+        <p>My sentence: <input type="text" placeholder="sua frase sobre sua realidade" data-key="d1-vc1-s" style="margin-top:6px"></p>
+      </div></div>
+      <div class="ex-item"><div class="ex-num">2.</div><div class="ex-content">
+        <p>Word: <input type="text" class="inline-input" placeholder="palavra" data-key="d1-vc2-w" style="width:140px"></p>
+        <p>Definition: <input type="text" placeholder="definição" data-key="d1-vc2-d" style="margin-top:6px"></p>
+        <p>My sentence: <input type="text" placeholder="sua frase" data-key="d1-vc2-s" style="margin-top:6px"></p>
+      </div></div>
+      <div class="ex-item"><div class="ex-num">3.</div><div class="ex-content">
+        <p>Word: <input type="text" class="inline-input" placeholder="palavra" data-key="d1-vc3-w" style="width:140px"></p>
+        <p>Definition: <input type="text" placeholder="definição" data-key="d1-vc3-d" style="margin-top:6px"></p>
+        <p>My sentence: <input type="text" placeholder="sua frase" data-key="d1-vc3-s" style="margin-top:6px"></p>
+      </div></div>
+    </div>
+  </div>
+
+</div><!-- /day-1 -->
+
+
+<!-- ══════════════════════ DIA 2 ══════════════════════ -->
+<div class="day-panel" id="day-2">
+
+  <div class="day-intro">
+    <div class="day-number">2</div>
+    <div class="day-intro-content">
+      <h2>Negativa Challenge + This is / These are</h2>
+      <p>Hoje o desafio é: antes de fazer o negativo, você precisa DECIDIR qual sistema usar. Isn't ou doesn't? Are ou Do? Sem muleta!</p>
+      <div class="day-meta">
+        <span class="day-pill">📹 Vídeo aula incluído</span>
+        <span class="day-pill">📖 13 palavras novas</span>
+        <span class="day-pill">⏱ 25 minutos</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTRASTE DIA 2 -->
+  <div class="card card-amber">
+    <div class="card-header">
+      <div class="card-icon">🔄</div>
+      <div><div class="card-title">Contraste — Negativa com os dois sistemas</div><div class="card-subtitle">Escolha ANTES de escrever: isn't/aren't ou don't/doesn't?</div></div>
+    </div>
+    <div class="card-body">
+      <div class="contrast-box">
+        <div class="contrast-label">To Be → ISN'T / AREN'T &nbsp;|&nbsp; Do Verbs → DON'T</div>
+        <table class="contrast-table">
+          <tr><td>I am late.</td><td>→</td><td>I am not late. / I'm not late.</td></tr>
+          <tr><td>They are busy.</td><td>→</td><td>They aren't busy.</td></tr>
+          <tr><td>I drink soda.</td><td>→</td><td>I don't drink soda.</td></tr>
+          <tr><td>We work overtime.</td><td>→</td><td>We don't work overtime.</td></tr>
+          <tr><td>I have a coffee break.</td><td>→</td><td>I don't have a coffee break.</td></tr>
+        </table>
+      </div>
+      <div class="callout callout-amber"><strong>Decisão rápida: </strong><span>Veja o verbo principal. Se for AM/IS/ARE → use ISN'T/AREN'T. Se for qualquer outro verbo → use DON'T/DOESN'T.</span></div>
+    </div>
+  </div>
+
+  <!-- VOCAB DIA 2 -->
+  <div class="card card-green">
+    <div class="card-header">
+      <div class="card-icon">📚</div>
+      <div><div class="card-title">Vocabulário do Dia 2 — Negócios & Alimentação</div><div class="card-subtitle">13 palavras · Itens de escritório + alimentos do agronegócio</div></div>
+    </div>
+    <div class="card-body">
+      <div class="vocab-grid">
+        <div class="vocab-item"><div class="vocab-word">report</div><div class="vocab-pt">relatório</div><div class="vocab-sentence">I am ready for the meeting, but I don't have the <em>report</em>.</div></div>
+        <div class="vocab-item"><div class="vocab-word">document</div><div class="vocab-pt">documento</div><div class="vocab-sentence">Do you have the <em>document</em> for the client? I am not ready.</div></div>
+        <div class="vocab-item"><div class="vocab-word">file</div><div class="vocab-pt">arquivo</div><div class="vocab-sentence">This is the <em>file</em> for the production team. It isn't online yet.</div></div>
+        <div class="vocab-item"><div class="vocab-word">laptop</div><div class="vocab-pt">notebook</div><div class="vocab-sentence">This is the new <em>laptop</em>. It is for the laboratory team.</div></div>
+        <div class="vocab-item"><div class="vocab-word">tablet</div><div class="vocab-pt">tablet</div><div class="vocab-sentence">Are these your <em>tablets</em>? No, they aren't. They are the manager's.</div></div>
+        <div class="vocab-item"><div class="vocab-word">notebook</div><div class="vocab-pt">caderno de anotações</div><div class="vocab-sentence">I always have my <em>notebook</em> in the meeting room.</div></div>
+        <div class="vocab-item"><div class="vocab-word">pen</div><div class="vocab-pt">caneta</div><div class="vocab-sentence">Do you have a <em>pen</em>? I don't have mine.</div></div>
+        <div class="vocab-item"><div class="vocab-word">steak</div><div class="vocab-pt">bife / carne grelhada</div><div class="vocab-sentence">We have <em>steak</em>, lasagna, and pork at the canteen today.</div></div>
+        <div class="vocab-item"><div class="vocab-word">fish</div><div class="vocab-pt">peixe</div><div class="vocab-sentence">Do you eat <em>fish</em>? I don't eat fish — I eat meat and salad.</div></div>
+        <div class="vocab-item"><div class="vocab-word">sandwich</div><div class="vocab-pt">sanduíche</div><div class="vocab-sentence">I have a <em>sandwich</em> at my coffee break. I am hungry.</div></div>
+        <div class="vocab-item"><div class="vocab-word">soup</div><div class="vocab-pt">sopa</div><div class="vocab-sentence">I don't eat <em>soup</em> for lunch. I eat rice and beans.</div></div>
+        <div class="vocab-item"><div class="vocab-word">dessert</div><div class="vocab-pt">sobremesa</div><div class="vocab-sentence">Do you have <em>dessert</em> at the canteen? Yes, we do — on Fridays!</div></div>
+        <div class="vocab-item"><div class="vocab-word">juice</div><div class="vocab-pt">suco</div><div class="vocab-sentence">I drink <em>juice</em> for breakfast. I don't drink soda.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRILL 1 — NEGATIVE CHALLENGE -->
+  <div class="card card-navy">
+    <div class="card-header">
+      <div class="card-icon">🔥</div>
+      <div><div class="card-title">Part 2 — Drill 1: Negative Challenge</div><div class="card-subtitle">To Be vs. Do — decida antes de escrever</div></div>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-navy"><strong>Atenção: </strong><span>Cada frase pode ser To Be ou Do Verb. Leia o verbo principal antes de responder. Use ISN'T/AREN'T para To Be e DON'T para Do Verbs.</span></div>
+      <div class="exercise-label">Transforme em negativo</div>
+      <div class="ex-item"><div class="ex-num">1.</div><div class="ex-content"><p>I am late for the meeting.</p><input type="text" placeholder="I am not / I'm not..." data-key="d2-neg-1"></div></div>
+      <div class="ex-item"><div class="ex-num">2.</div><div class="ex-content"><p>We eat meat for lunch.</p><input type="text" placeholder="We don't..." data-key="d2-neg-2"></div></div>
+      <div class="ex-item"><div class="ex-num">3.</div><div class="ex-content"><p>You are a supplier.</p><input type="text" placeholder="You aren't..." data-key="d2-neg-3"></div></div>
+      <div class="ex-item"><div class="ex-num">4.</div><div class="ex-content"><p>We drink soda at work.</p><input type="text" placeholder="We don't..." data-key="d2-neg-4"></div></div>
+      <div class="ex-item"><div class="ex-num">5.</div><div class="ex-content"><p>I am at the warehouse.</p><input type="text" placeholder="I am not / I'm not..." data-key="d2-neg-5"></div></div>
+      <div class="ex-item"><div class="ex-num">6.</div><div class="ex-content"><p>I work overtime on weekends.</p><input type="text" placeholder="I don't..." data-key="d2-neg-6"></div></div>
+      <div class="ex-item"><div class="ex-num">7.</div><div class="ex-content"><p>They are busy today.</p><input type="text" placeholder="They aren't..." data-key="d2-neg-7"></div></div>
+      <div class="ex-item"><div class="ex-num">8.</div><div class="ex-content"><p>You study English at noon.</p><input type="text" placeholder="You don't..." data-key="d2-neg-8"></div></div>
+      <div class="ex-item"><div class="ex-num">9.</div><div class="ex-content"><p>I am online now.</p><input type="text" placeholder="I am not / I'm not..." data-key="d2-neg-9"></div></div>
+      <div class="ex-item"><div class="ex-num">10.</div><div class="ex-content"><p>I have a coffee break at 10am.</p><input type="text" placeholder="I don't..." data-key="d2-neg-10"></div></div>
+      <div class="ex-item"><div class="ex-num">11.</div><div class="ex-content"><p>We are at the office.</p><input type="text" placeholder="We aren't..." data-key="d2-neg-11"></div></div>
+    </div>
+  </div>
+
+  <!-- PART 3 — THIS IS / THESE ARE -->
+  <div class="card card-navy">
+    <div class="card-header">
+      <div class="card-icon">📖</div>
+      <div><div class="card-title">Part 3 — Grammar Briefing: This is / These are</div><div class="card-subtitle">Singular vs. Plural nas apresentações profissionais</div></div>
+    </div>
+    <div class="card-body">
+      <div class="grammar-box">
+        <h4>Negativa e Pergunta</h4>
+        <div class="rule-row"><div class="rule-affirm">This is my assistant.</div><div class="rule-arrow">→</div><div class="rule-neg">This isn't my assistant.</div><div class="rule-arrow">/</div><div class="rule-q">Is this my assistant?</div></div>
+        <div class="rule-row"><div class="rule-affirm">These are my co-workers.</div><div class="rule-arrow">→</div><div class="rule-neg">These aren't my co-workers.</div><div class="rule-arrow">/</div><div class="rule-q">Are these my co-workers?</div></div>
+      </div>
+      <div class="exercise-label">Transforme em negativo</div>
+      <div class="ex-item"><div class="ex-num">1.</div><div class="ex-content"><p>This is my friend, Carlos.</p><input type="text" placeholder="This isn't..." data-key="d2-this-neg-1"></div></div>
+      <div class="ex-item"><div class="ex-num">2.</div><div class="ex-content"><p>These are my co-workers.</p><input type="text" placeholder="These aren't..." data-key="d2-this-neg-2"></div></div>
+      <div class="ex-item"><div class="ex-num">3.</div><div class="ex-content"><p>This is the director.</p><input type="text" placeholder="This isn't..." data-key="d2-this-neg-3"></div></div>
+      <div class="exercise-label" style="margin-top:20px">Transforme em pergunta</div>
+      <div class="ex-item"><div class="ex-num">1.</div><div class="ex-content"><p>This is your boss.</p><input type="text" placeholder="Is this...?" data-key="d2-this-q-1"></div></div>
+      <div class="ex-item"><div class="ex-num">2.</div><div class="ex-content"><p>These are Ana and Peter.</p><input type="text" placeholder="Are these...?" data-key="d2-this-q-2"></div></div>
+      <div class="ex-item"><div class="ex-num">3.</div><div class="ex-content"><p>This is Ana from the HR team.</p><input type="text" placeholder="Is this...?" data-key="d2-this-q-3"></div></div>
+      <div class="exercise-label" style="margin-top:20px">Complete com THIS ou THESE</div>
+      <div class="ex-item"><div class="ex-num">1.</div><div class="ex-content"><p><input type="text" class="inline-input" placeholder="___" data-key="d2-tt-1" style="width:80px"> is my mother. She is a dentist.</p></div></div>
+      <div class="ex-item"><div class="ex-num">2.</div><div class="ex-content"><p><input type="text" class="inline-input" placeholder="___" data-key="d2-tt-2" style="width:80px"> are my friends. They are from Argentina.</p></div></div>
+      <div class="ex-item"><div class="ex-num">3.</div><div class="ex-content"><p><input type="text" class="inline-input" placeholder="___" data-key="d2-tt-3" style="width:80px"> is my cousin. He is an agronomist.</p></div></div>
+      <div class="ex-item"><div class="ex-num">4.</div><div class="ex-content"><p><input type="text" class="inline-input" placeholder="___" data-key="d2-tt-4" style="width:80px"> are my partners. They are at the headquarters.</p></div></div>
+      <div class="ex-item"><div class="ex-num">5.</div><div class="ex-content"><p><input type="text" class="inline-input" placeholder="___" data-key="d2-tt-5" style="width:80px"> is the new assistant. He is from the legal team.</p></div></div>
+    </div>
+  </div>
+
+  <!-- VOCAB CHECK DIA 2 -->
+  <div class="card card-green">
+    <div class="card-header">
+      <div class="card-icon">📝</div>
+      <div><div class="card-title">Vocabulary Check — Dia 2</div><div class="card-subtitle">3 palavras com definição e frase própria</div></div>
+    </div>
+    <div class="card-body">
+      <div class="ex-item"><div class="ex-num">1.</div><div class="ex-content">
+        <p>Word: <input type="text" class="inline-input" placeholder="palavra" data-key="d2-vc1-w" style="width:140px"></p>
+        <p>Definition: <input type="text" placeholder="definição" data-key="d2-vc1-d" style="margin-top:6px"></p>
+        <p>My sentence: <input type="text" placeholder="sua frase" data-key="d2-vc1-s" style="margin-top:6px"></p>
+      </div></div>
+      <div class="ex-item"><div class="ex-num">2.</div><div class="ex-content">
+        <p>Word: <input type="text" class="inline-input" placeholder="palavra" data-key="d2-vc2-w" style="width:140px"></p>
+        <p>Definition: <input type="text" placeholder="definição" data-key="d2-vc2-d" style="margin-top:6px"></p>
+        <p>My sentence: <input type="text" placeholder="sua frase" data-key="d2-vc2-s" style="margin-top:6px"></p>
+      </div></div>
+      <div class="ex-item"><div class="ex-num">3.</div><div class="ex-content">
+        <p>Word: <input type="text" class="inline-input" placeholder="palavra" data-key="d2-vc3-w" style="width:140px"></p>
+        <p>Definition: <input type="text" placeholder="definição" data-key="d2-vc3-d" style="margin-top:6px"></p>
+        <p>My sentence: <input type="text" placeholder="sua frase" data-key="d2-vc3-s" style="margin-top:6px"></p>
+      </div></div>
+    </div>
+  </div>
+
+</div><!-- /day-2 -->
+
+
+<!-- ══════════════════════ DIA 3 ══════════════════════ -->
+<div class="day-panel" id="day-3">
+
+  <div class="day-intro">
+    <div class="day-number">3</div>
+    <div class="day-intro-content">
+      <h2>WH-Questions Mistas + Logística</h2>
+      <p>Hoje o desafio sobe: WH-Questions misturando os dois sistemas. Who/Where usam To Be. What/When podem usar os dois. Atenção total!</p>
+      <div class="day-meta">
+        <span class="day-pill">📹 Vídeo aula incluído</span>
+        <span class="day-pill">📖 13 palavras novas</span>
+        <span class="day-pill">⏱ 25 minutos</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTRASTE DIA 3 -->
+  <div class="card card-amber">
+    <div class="card-header">
+      <div class="card-icon">🔄</div>
+      <div><div class="card-title">WH-Questions — o desafio do Dia 3</div><div class="card-subtitle">Mesma palavra WH-, estruturas diferentes</div></div>
+    </div>
+    <div class="card-body">
+      <div class="contrast-box">
+        <div class="contrast-label">WHERE — mesmo WH-word, duas estruturas</div>
+        <table class="contrast-table">
+          <tr><td>Where ARE you? (localização)</td><td>→</td><td>I am at the warehouse.</td></tr>
+          <tr><td>Where DO you work? (ação)</td><td>→</td><td>I work at the headquarters.</td></tr>
+          <tr><td>Who IS this? (identidade)</td><td>→</td><td>This is the director.</td></tr>
+          <tr><td>What DO you eat? (ação)</td><td>→</td><td>I eat rice and beans for lunch.</td></tr>
+          <tr><td>When IS the meeting? (status)</td><td>→</td><td>The meeting is on Monday.</td></tr>
+          <tr><td>When DO you study? (ação)</td><td>→</td><td>I study after work.</td></tr>
+        </table>
+      </div>
+      <div class="callout callout-amber"><strong>Regra rápida: </strong><span>Pergunte a si mesmo: "Estou perguntando sobre o que alguém É/ESTÁ — ou sobre o que alguém FAZ?" Se É/ESTÁ → To Be. Se FAZ → Do Verb.</span></div>
+    </div>
+  </div>
+
+  <!-- VOCAB DIA 3 -->
+  <div class="card card-green">
+    <div class="card-header">
+      <div class="card-icon">📚</div>
+      <div><div class="card-title">Vocabulário do Dia 3 — Logística & Pessoas</div><div class="card-subtitle">13 palavras · Vocabulário central do agronegócio</div></div>
+    </div>
+    <div class="card-body">
+      <div class="vocab-grid">
+        <div class="vocab-item"><div class="vocab-word">supplier</div><div class="vocab-pt">fornecedor/a</div><div class="vocab-sentence">Are you the new <em>supplier</em> from the logistics company?</div></div>
+        <div class="vocab-item"><div class="vocab-word">client</div><div class="vocab-pt">cliente</div><div class="vocab-sentence">Where is the <em>client</em>? Is he at the lobby?</div></div>
+        <div class="vocab-item"><div class="vocab-word">shipment</div><div class="vocab-pt">carregamento / remessa</div><div class="vocab-sentence">We have a big <em>shipment</em> today. I am at the warehouse.</div></div>
+        <div class="vocab-item"><div class="vocab-word">delivery</div><div class="vocab-pt">entrega</div><div class="vocab-sentence">Are you on time for the <em>delivery</em>? Yes, I am.</div></div>
+        <div class="vocab-item"><div class="vocab-word">inventory</div><div class="vocab-pt">estoque / inventário</div><div class="vocab-sentence">This is the <em>inventory</em> report. It isn't ready yet.</div></div>
+        <div class="vocab-item"><div class="vocab-word">stock</div><div class="vocab-pt">estoque</div><div class="vocab-sentence">We don't have <em>stock</em> for this order. The delay is on Monday.</div></div>
+        <div class="vocab-item"><div class="vocab-word">production</div><div class="vocab-pt">produção</div><div class="vocab-sentence">I am Ricardo, the <em>production</em> manager. Do you work in production?</div></div>
+        <div class="vocab-item"><div class="vocab-word">quality</div><div class="vocab-pt">qualidade</div><div class="vocab-sentence">These are the <em>quality</em> reports. They are for the laboratory team.</div></div>
+        <div class="vocab-item"><div class="vocab-word">schedule</div><div class="vocab-pt">cronograma / agenda</div><div class="vocab-sentence">When is the meeting? Do you have the <em>schedule</em>?</div></div>
+        <div class="vocab-item"><div class="vocab-word">delay</div><div class="vocab-pt">atraso</div><div class="vocab-sentence">Is there a <em>delay</em>? Yes, the shipment is late.</div></div>
+        <div class="vocab-item"><div class="vocab-word">order</div><div class="vocab-pt">pedido</div><div class="vocab-sentence">This is the <em>order</em> for the client. It isn't ready.</div></div>
+        <div class="vocab-item"><div class="vocab-word">supervisor</div><div class="vocab-pt">supervisor/a</div><div class="vocab-sentence">I am the <em>supervisor</em> here. Are you the new assistant?</div></div>
+        <div class="vocab-item"><div class="vocab-word">assistant</div><div class="vocab-pt">assistente</div><div class="vocab-sentence">This is my <em>assistant</em>, Laura. She is from the production team.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRILL 2 — INTERROGATIVE CHALLENGE -->
+  <div class="card card-navy">
+    <div class="card-header">
+      <div class="card-icon">🔥</div>
+      <div><div class="card-title">Part 2 — Drill 2: Interrogative Challenge</div><div class="card-subtitle">Are you vs. Do you — contexto decide</div></div>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-navy"><strong>Cada contexto diz qual estrutura usar. </strong><span>(profession/identity/status/location) → ARE YOU · (action) → DO YOU</span></div>
+      <div class="exercise-label">Crie a pergunta correta</div>
+      <div class="ex-item"><div class="ex-num">1.</div><div class="ex-content"><p>(location) → <strong>Are you</strong> at the farm?</p><p>Agora você: (location) → <input type="text" placeholder="Are you ___ at the ___?" data-key="d3-int-1"></p></div></div>
+      <div class="ex-item"><div class="ex-num">2.</div><div class="ex-content"><p>(action: work) → <input type="text" placeholder="Do you ___ long hours?" data-key="d3-int-2"></div></div>
+      <div class="ex-item"><div class="ex-num">3.</div><div class="ex-content"><p>(status) → <input type="text" placeholder="Are you ___ ready for the delivery?" data-key="d3-int-3"></div></div>
+      <div class="ex-item"><div class="ex-num">4.</div><div class="ex-content"><p>(action: have) → <input type="text" placeholder="Do you ___ lunch at the canteen?" data-key="d3-int-4"></div></div>
+      <div class="ex-item"><div class="ex-num">5.</div><div class="ex-content"><p>(identity) → <input type="text" placeholder="Are you ___ the new supervisor?" data-key="d3-int-5"></div></div>
+      <div class="ex-item"><div class="ex-num">6.</div><div class="ex-content"><p>(action: study) → <input type="text" placeholder="Do you ___ English at night?" data-key="d3-int-6"></div></div>
+      <div class="ex-item"><div class="ex-num">7.</div><div class="ex-content"><p>(status) → <input type="text" placeholder="Are you ___ on time?" data-key="d3-int-7"></div></div>
+      <div class="ex-item"><div class="ex-num">8.</div><div class="ex-content"><p>(action: eat) → <input type="text" placeholder="Do you ___ granola bars?" data-key="d3-int-8"></div></div>
+    </div>
+  </div>
+
+  <!-- DRILL 3 — WH MIX -->
+  <div class="card card-navy">
+    <div class="card-header">
+      <div class="card-icon">❓</div>
+      <div><div class="card-title">Part 4 — Drill 3: The WH-Mix</div><div class="card-subtitle">Crie a pergunta para cada resposta</div></div>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-navy"><strong>Exemplo: </strong><span>Answer: This is my father. → Question: <strong>Who is this?</strong></span></div>
+      <div class="exercise-label">Escreva a pergunta completa</div>
+      <div class="ex-item"><div class="ex-num">1.</div><div class="ex-content"><p>Answer: I am at the airport.</p><input type="text" placeholder="Where...?" data-key="d3-wh-1"></div></div>
+      <div class="ex-item"><div class="ex-num">2.</div><div class="ex-content"><p>Answer: We eat fish for dinner.</p><input type="text" placeholder="What...?" data-key="d3-wh-2"></div></div>
+      <div class="ex-item"><div class="ex-num">3.</div><div class="ex-content"><p>Answer: The shipment is on Monday.</p><input type="text" placeholder="When...?" data-key="d3-wh-3"></div></div>
+      <div class="ex-item"><div class="ex-num">4.</div><div class="ex-content"><p>Answer: This is the director.</p><input type="text" placeholder="Who...?" data-key="d3-wh-4"></div></div>
+      <div class="ex-item"><div class="ex-num">5.</div><div class="ex-content"><p>Answer: We study after work.</p><input type="text" placeholder="When...?" data-key="d3-wh-5"></div></div>
+      <div class="ex-item"><div class="ex-num">6.</div><div class="ex-content"><p>Answer: They work at a cooperative.</p><input type="text" placeholder="Where...?" data-key="d3-wh-6"></div></div>
+      <div class="ex-item"><div class="ex-num">7.</div><div class="ex-content"><p>Answer: We are in a meeting.</p><input type="text" placeholder="Where...?" data-key="d3-wh-7"></div></div>
+      <div class="ex-item"><div class="ex-num">8.</div><div class="ex-content"><p>Answer: I have breakfast at 7am.</p><input type="text" placeholder="When...?" data-key="d3-wh-8"></div></div>
+      <div class="ex-item"><div class="ex-num">9.</div><div class="ex-content"><p>Answer: They are my colleagues.</p><input type="text" placeholder="Who...?" data-key="d3-wh-9"></div></div>
+      <div class="ex-item"><div class="ex-num">10.</div><div class="ex-content"><p>Answer: My email is p.silva@agro.com.</p><input type="text" placeholder="What...?" data-key="d3-wh-10"></div></div>
+    </div>
+  </div>
+
+  <!-- VOCAB CHECK DIA 3 -->
+  <div class="card card-green">
+    <div class="card-header">
+      <div class="card-icon">📝</div>
+      <div><div class="card-title">Vocabulary Check — Dia 3</div><div class="card-subtitle">2 palavras novas + revise TUDO dos Dias 1 e 2</div></div>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-green"><strong>Revisão obrigatória: </strong><span>Antes de anotar, leia todas as palavras que você escreveu nos Dias 1 e 2. Tente dizer cada frase em voz alta de memória.</span></div>
+      <div class="ex-item"><div class="ex-num">1.</div><div class="ex-content">
+        <p>Word: <input type="text" class="inline-input" placeholder="palavra" data-key="d3-vc1-w" style="width:140px"></p>
+        <p>Definition: <input type="text" placeholder="definição" data-key="d3-vc1-d" style="margin-top:6px"></p>
+        <p>My sentence: <input type="text" placeholder="sua frase" data-key="d3-vc1-s" style="margin-top:6px"></p>
+      </div></div>
+      <div class="ex-item"><div class="ex-num">2.</div><div class="ex-content">
+        <p>Word: <input type="text" class="inline-input" placeholder="palavra" data-key="d3-vc2-w" style="width:140px"></p>
+        <p>Definition: <input type="text" placeholder="definição" data-key="d3-vc2-d" style="margin-top:6px"></p>
+        <p>My sentence: <input type="text" placeholder="sua frase" data-key="d3-vc2-s" style="margin-top:6px"></p>
+      </div></div>
+    </div>
+  </div>
+
+</div><!-- /day-3 -->
+
+
+<!-- ══════════════════════ DIA 4 ══════════════════════ -->
+<div class="day-panel" id="day-4">
+
+  <div class="day-intro" style="background:var(--teal)">
+    <div class="day-number">4</div>
+    <div class="day-intro-content">
+      <h2>Listening — Dois Sistemas em Ação</h2>
+      <p>Sem vídeo hoje. Você vai ouvir 3 conversas profissionais onde To Be e Do Verbs aparecem juntos. Foco total no ouvido.</p>
+      <div class="day-meta">
+        <span class="day-pill">🎧 3 áudios</span>
+        <span class="day-pill">📖 5 frases dos áudios</span>
+        <span class="day-pill">⏱ 25 minutos</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRASES DO DIA 4 -->
+  <div class="card card-teal">
+    <div class="card-header">
+      <div class="card-icon">👁️</div>
+      <div><div class="card-title">Antes de ouvir — 5 frases dos áudios</div><div class="card-subtitle">Leia antes de dar play. Identifique To Be (TB) e Do Verb (DV) em cada frase.</div></div>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-teal"><strong>Instrução: </strong><span>Leia cada frase. Identifique se é To Be (TB) ou Do Verb (DV) — ou se tem os DOIS. Depois ouça e confirme.</span></div>
+      <div class="phrase-card">
+        <div class="phrase-en">1. "I am at the warehouse and I work long hours today."</div>
+        <div class="phrase-tags"><span class="phrase-tag tag-tobe">TO BE: I am</span><span class="phrase-tag tag-do">DO VERB: I work</span></div>
+        <div class="phrase-practice"><input type="text" placeholder="Identifique os dois verbos e escreva sua própria frase parecida" data-key="d4-ph-1"></div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-en">2. "You are a supplier and you drink coffee with the manager."</div>
+        <div class="phrase-tags"><span class="phrase-tag tag-tobe">TO BE: You are</span><span class="phrase-tag tag-do">DO VERB: you drink</span></div>
+        <div class="phrase-practice"><input type="text" placeholder="Escreva uma frase parecida sobre você" data-key="d4-ph-2"></div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-en">3. "I am ready for the meeting, but I don't have the report."</div>
+        <div class="phrase-tags"><span class="phrase-tag tag-tobe">TO BE: I am</span><span class="phrase-tag tag-do">DO VERB: I don't have</span></div>
+        <div class="phrase-practice"><input type="text" placeholder="Use 'I am ___, but I don't ___'" data-key="d4-ph-3"></div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-en">4. "This is the new laptop. It is for the production team."</div>
+        <div class="phrase-tags"><span class="phrase-tag tag-tobe">TO BE: This is / It is</span></div>
+        <div class="phrase-practice"><input type="text" placeholder="Use 'This is ___. It is for ___'" data-key="d4-ph-4"></div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-en">5. "I am early for the delivery, so I have a coffee break now."</div>
+        <div class="phrase-tags"><span class="phrase-tag tag-tobe">TO BE: I am</span><span class="phrase-tag tag-do">DO VERB: I have</span></div>
+        <div class="phrase-practice"><input type="text" placeholder="Use 'I am ___, so I ___'" data-key="d4-ph-5"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIO 1 -->
+  <div class="card card-teal">
+    <div class="card-header">
+      <div class="card-icon">🎧</div>
+      <div><div class="card-title">Áudio 1 — The Warehouse Logistics</div><div class="card-subtitle">Listen and Answer</div></div>
+    </div>
+    <div class="card-body">
+      <div class="audio-card">
+        <div class="audio-header"><span class="audio-badge">ÁUDIO 1</span><span class="audio-name">Paulo & Marcos — Warehouse</span></div>
+        <div class="audio-instructions">1. Ouça 2x SEM ler as perguntas · 2. Responda · 3. Shadowing</div>
+        <a href="https://drive.google.com/file/d/1o1x59X_3xeTFzMtNwV6KltlnFpmm0ZrD/view" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:white;padding:10px 20px;border-radius:8px;font-family:DM Sans,sans-serif;font-size:0.85rem;font-weight:600;text-decoration:none;margin-bottom:14px">🎧 Abrir Áudio 1 no Google Drive</a>
+        <div class="script-toggle">
+          <button class="btn-script" onclick="toggleScript('s1')">📄 Ver / Ocultar script</button>
+        </div>
+        <div class="script-box" id="s1">
+          "Hello! I am Paulo and I am the supervisor here. I am at the warehouse today because we have a big shipment of inventory. This is my assistant, Marcos. He is an analyst and he is very busy right now. We don't work in the office today, we work long hours in the field. My email for the report is <strong>p.supervisor@agro.com</strong>."
+        </div>
+      </div>
+      <div class="exercise-label">Responda as perguntas</div>
+      <div class="ex-item"><div class="ex-num">1.</div><div class="ex-content"><p>Who is he?</p><input type="text" placeholder="He is..." data-key="d4-a1-1"></div></div>
+      <div class="ex-item"><div class="ex-num">2.</div><div class="ex-content"><p>Where are Paulo and Marcos today?</p><input type="text" placeholder="They are at..." data-key="d4-a1-2"></div></div>
+      <div class="ex-item"><div class="ex-num">3.</div><div class="ex-content"><p>What is Marcos's profession?</p><input type="text" placeholder="He is an..." data-key="d4-a1-3"></div></div>
+      <div class="ex-item"><div class="ex-num">4.</div><div class="ex-content"><p>Do they work in the office today?</p><input type="text" placeholder="No, they don't. They..." data-key="d4-a1-4"></div></div>
+      <div class="ex-item"><div class="ex-num">5.</div><div class="ex-content"><p>How do you spell the email address?</p><input type="text" placeholder="P dot..." data-key="d4-a1-5"></div></div>
+    </div>
+  </div>
+
+  <!-- AUDIO 2 -->
+  <div class="card card-teal">
+    <div class="card-header">
+      <div class="card-icon">🎧</div>
+      <div><div class="card-title">Áudio 2 — Welcome to the Ranch</div><div class="card-subtitle">Listen and Complete</div></div>
+    </div>
+    <div class="card-body">
+      <div class="audio-card">
+        <div class="audio-header"><span class="audio-badge">ÁUDIO 2</span><span class="audio-name">Ricardo — Ranch Welcome</span></div>
+        <div class="audio-instructions">1. Ouça 2x SEM ler as lacunas · 2. Complete · 3. Ouça para conferir</div>
+        <a href="https://drive.google.com/file/d/1TLb6RGeHk0_3JoErB8HaJnDIeD0P_Mai/view" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:white;padding:10px 20px;border-radius:8px;font-family:DM Sans,sans-serif;font-size:0.85rem;font-weight:600;text-decoration:none;margin-bottom:14px">🎧 Abrir Áudio 2 no Google Drive</a>
+        <div class="script-toggle">
+          <button class="btn-script" onclick="toggleScript('s2')">📄 Ver / Ocultar script</button>
+        </div>
+        <div class="script-box" id="s2">
+          "Welcome to the ranch! I am Ricardo, the production <strong>manager</strong>. Are you the new <strong>client</strong> from the laboratory? Great! <strong>These are</strong> our agronomists, Julia and Pedro. <strong>They are from</strong> the technical team. They are in a <strong>meeting</strong> at the headquarters now. Do you want to <strong>have lunch</strong> at the canteen at noon? We have steak, lasagna, and pork today."
+        </div>
+      </div>
+      <div class="dialogue-box">
+        "Welcome to the ranch! I am Ricardo, the production <input type="text" class="inline-input" placeholder="____" data-key="d4-a2-1" style="width:100px">. Are you the new <input type="text" class="inline-input" placeholder="____" data-key="d4-a2-2" style="width:80px"> from the laboratory? Great! <input type="text" class="inline-input" placeholder="____" data-key="d4-a2-3" style="width:80px"> <input type="text" class="inline-input" placeholder="____" data-key="d4-a2-4" style="width:60px"> our agronomists, Julia and Pedro. <input type="text" class="inline-input" placeholder="____" data-key="d4-a2-5" style="width:60px"> <input type="text" class="inline-input" placeholder="____" data-key="d4-a2-6" style="width:80px"> the technical team. They are in a <input type="text" class="inline-input" placeholder="____" data-key="d4-a2-7" style="width:90px"> at the headquarters now. Do you want to <input type="text" class="inline-input" placeholder="____" data-key="d4-a2-8" style="width:80px"> <input type="text" class="inline-input" placeholder="____" data-key="d4-a2-9" style="width:70px"> at the canteen at noon? We have steak, lasagna, and pork today."
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIO 3 -->
+  <div class="card card-teal">
+    <div class="card-header">
+      <div class="card-icon">🎧</div>
+      <div><div class="card-title">Áudio 3 — Ana & Colleague</div><div class="card-subtitle">Listen and Complete — mais complexo</div></div>
+    </div>
+    <div class="card-body">
+      <div class="audio-card">
+        <div class="audio-header"><span class="audio-badge">ÁUDIO 3</span><span class="audio-name">Ana & Paulo — Before the Meeting</span></div>
+        <div class="audio-instructions">Este é o mais longo. Foque no contexto geral primeiro. Ouça 2x antes de completar.</div>
+        <a href="https://drive.google.com/file/d/1VrZfmBuqzaI0GTB0GryUKA0Yi1W5i-pu/view" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:white;padding:10px 20px;border-radius:8px;font-family:DM Sans,sans-serif;font-size:0.85rem;font-weight:600;text-decoration:none;margin-bottom:14px">🎧 Abrir Áudio 3 no Google Drive</a>
+        <div class="script-toggle">
+          <button class="btn-script" onclick="toggleScript('s3')">📄 Ver / Ocultar script</button>
+        </div>
+        <div class="script-box" id="s3">
+          <strong>COLLEAGUE:</strong> "Hello! Are you Ana, the project manager?"<br>
+          <strong>ANA:</strong> "Yes, I am. Nice to meet you! Are you the new assistant?"<br>
+          <strong>COLLEAGUE:</strong> "Yes, I am. I am Paulo, and I am from the HR team. Are you on time for the meeting?"<br>
+          <strong>ANA:</strong> "Yes, I am. Do you want to have a coffee before the meeting?"<br>
+          <strong>COLLEAGUE:</strong> "No, thank you. I don't drink coffee, but I have a snack bar and tea in my bag."<br>
+          <strong>ANA:</strong> "Ok. Do you work at the office or at the headquarters?"<br>
+          <strong>ANA:</strong> "Yes, I work at the headquarters, and I work long hours. I study English at night after work."<br>
+          <strong>COLLEAGUE:</strong> "Great! I study English too. I study during my lunch time. Do you study alone?"<br>
+          <strong>ANA:</strong> "No, I study with my team. We study every Saturday."
+        </div>
+      </div>
+      <div class="dialogue-box" style="font-size:0.84rem">
+        <strong>COLLEAGUE:</strong> "Hello! <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-1" style="width:50px"> you Ana, the project <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-2" style="width:100px">?"<br>
+        <strong>ANA:</strong> "Yes, I am. Nice to <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-3" style="width:60px"> you! Are you the new <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-4" style="width:90px">?"<br>
+        <strong>COLLEAGUE:</strong> "Yes, I am. I am Paulo, and <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-5" style="width:40px"> <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-6" style="width:50px"> from the HR team. Are you on time for the <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-7" style="width:90px">?"<br>
+        <strong>ANA:</strong> "Yes, I am. <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-8" style="width:50px"> you want to have a <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-9" style="width:70px"> before the meeting?"<br>
+        <strong>COLLEAGUE:</strong> "No, <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-10" style="width:60px"> <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-11" style="width:50px">. I <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-12" style="width:60px"> drink coffee, but I <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-13" style="width:60px"> a snack bar and tea in my bag."<br>
+        <strong>ANA:</strong> "Ok. <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-14" style="width:40px"> <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-15" style="width:60px"> work at the office or at the headquarters?"<br>
+        <strong>ANA:</strong> "Yes, I <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-16" style="width:60px"> at the headquarters, and I work <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-17" style="width:60px"> <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-18" style="width:60px">. I study English at night <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-19" style="width:70px"> work."<br>
+        <strong>COLLEAGUE:</strong> "Great! I <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-20" style="width:60px"> English too. I study during my lunch time. <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-21" style="width:40px"> <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-22" style="width:60px"> <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-23" style="width:60px"> alone?"<br>
+        <strong>ANA:</strong> "No, I study with <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-24" style="width:40px"> <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-25" style="width:60px">. <input type="text" class="inline-input" placeholder="____" data-key="d4-a3-26" style="width:50px"> study every Saturday."
+      </div>
+    </div>
+  </div>
+
+</div><!-- /day-4 -->
+
+
+<!-- ══════════════════════ DIA 5 ══════════════════════ -->
+<div class="day-panel" id="day-5">
+
+  <div class="day-intro" style="background:var(--navy)">
+    <div class="day-number">5</div>
+    <div class="day-intro-content">
+      <h2>Produção Total — Identidade + Rotina</h2>
+      <p>Sem vídeo. Sem palavras novas. Hoje você usa TUDO — To Be e Do Verbs juntos — para se apresentar e entrevistar colegas. Chegue na aula pronto!</p>
+      <div class="day-meta">
+        <span class="day-pill">✍️ Personal Production</span>
+        <span class="day-pill">🌾 Mini-Project</span>
+        <span class="day-pill">⏱ 25 minutos</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVISÃO -->
+  <div class="card card-amber">
+    <div class="card-header">
+      <div class="card-icon">🔁</div>
+      <div><div class="card-title">Revisão Rápida — 3 minutos</div><div class="card-subtitle">Antes de começar, ative tudo que aprendeu</div></div>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-amber"><strong>Instrução: </strong><span>Volte aos Dias 1, 2 e 3. Leia todas as palavras do Vocabulary Check em voz alta. Tente dizer cada frase de memória. Não escreva — só leia e fale.</span></div>
+    </div>
+  </div>
+
+  <!-- FRASES DO DIA 5 -->
+  <div class="card card-navy">
+    <div class="card-header">
+      <div class="card-icon">💡</div>
+      <div><div class="card-title">Frases de contexto — Dia 5</div><div class="card-subtitle">Leia e responda sobre VOCÊ para cada frase</div></div>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-navy"><strong>Instrução: </strong><span>Para cada frase modelo, escreva uma frase verdadeira sobre você. Use os dois sistemas — To Be e Do Verbs — juntos quando possível.</span></div>
+
+      <div class="phrase-card">
+        <div class="phrase-en">1. Are you a supervisor? Do you work at the headquarters?</div>
+        <div class="phrase-tags"><span class="phrase-tag tag-tobe">Are you = To Be</span><span class="phrase-tag tag-do">Do you work = Do Verb</span></div>
+        <div class="phrase-practice"><input type="text" placeholder="I am a ___. I work at ___." data-key="d5-ph-1"></div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-en">2. Where is the client? Do you have the document for the client?</div>
+        <div class="phrase-tags"><span class="phrase-tag tag-tobe">Where is = To Be</span><span class="phrase-tag tag-do">Do you have = Do Verb</span></div>
+        <div class="phrase-practice"><input type="text" placeholder="The client is ___. Yes, I do. / No, I don't." data-key="d5-ph-2"></div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-en">3. When is the meeting? Do you have the schedule?</div>
+        <div class="phrase-tags"><span class="phrase-tag tag-tobe">When is = To Be</span><span class="phrase-tag tag-do">Do you have = Do Verb</span></div>
+        <div class="phrase-practice"><input type="text" placeholder="The meeting is on ___. Yes, I do. / No, I don't." data-key="d5-ph-3"></div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-en">4. Who are they? Do they work in the laboratory?</div>
+        <div class="phrase-tags"><span class="phrase-tag tag-tobe">Who are = To Be</span><span class="phrase-tag tag-do">Do they work = Do Verb</span></div>
+        <div class="phrase-practice"><input type="text" placeholder="They are ___. Yes, they do. / No, they don't." data-key="d5-ph-4"></div>
+      </div>
+      <div class="phrase-card">
+        <div class="phrase-en">5. What do you eat at the airport? Are you hungry?</div>
+        <div class="phrase-tags"><span class="phrase-tag tag-do">What do you eat = Do Verb</span><span class="phrase-tag tag-tobe">Are you = To Be</span></div>
+        <div class="phrase-practice"><input type="text" placeholder="I eat ___. Yes, I am. / No, I'm not." data-key="d5-ph-5"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MINI PROJECT -->
+  <div class="card" style="border: 2px solid var(--green)">
+    <div class="card-header" style="background: linear-gradient(135deg, var(--green-pale), var(--navy-light))">
+      <div class="card-icon" style="background:var(--green-light)">🌾</div>
+      <div>
+        <div class="card-title" style="color:var(--green)">Part 6 & 7 — Mini-Project: Bridge 1</div>
+        <div class="card-subtitle">4 Phases — prepare tudo para a aula ao vivo!</div>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <!-- PHASE 1 -->
+      <div class="mini-project-box">
+        <h4>🔐 Phase 1 — Your Secret Identity Card</h4>
+        <p>Preencha seu cartão de identidade profissional. Escolha uma localização e um hábito do vocabulário desta semana. <strong>Não mostre para ninguém antes da aula!</strong></p>
+      </div>
+      <div style="background:var(--gray);border-radius:10px;padding:18px;margin-bottom:20px">
+        <p style="font-size:0.8rem;font-weight:700;letter-spacing:0.06em;color:var(--navy);text-transform:uppercase;margin-bottom:14px">BUSINESS IDENTITY CARD</p>
+        <div class="ex-item"><div class="ex-num">·</div><div class="ex-content"><p>Profession: <input type="text" placeholder="I am a ___" data-key="d5-id-prof"></p></div></div>
+        <div class="ex-item"><div class="ex-num">·</div><div class="ex-content"><p>Location: <input type="text" placeholder="I am at the ___" data-key="d5-id-loc"></p></div></div>
+        <div class="ex-item"><div class="ex-num">·</div><div class="ex-content"><p>Operation Habit: <input type="text" placeholder="I work / I eat / I study ___" data-key="d5-id-habit"></p></div></div>
+        <div class="ex-item"><div class="ex-num">·</div><div class="ex-content"><p>Status: <input type="text" placeholder="I am ___ (busy / available / early / on time)" data-key="d5-id-status"></p></div></div>
+      </div>
+
+      <!-- PHASE 2 -->
+      <div class="mini-project-box">
+        <h4>🔍 Phase 2 — Find the Partner</h4>
+        <p>Prepare as perguntas para descobrir seus colegas na aula. Missão: encontrar alguém que... Para cada situação, escreva a pergunta estratégica.</p>
+      </div>
+      <div class="exercise-label">The Strategic Questions</div>
+      <div class="ex-item"><div class="ex-num">1.</div><div class="ex-content"><p>...is a supervisor or manager.</p><input type="text" placeholder="Are you a...?" data-key="d5-fp-1"></div></div>
+      <div class="ex-item"><div class="ex-num">2.</div><div class="ex-content"><p>...is at the warehouse, office or laboratory.</p><input type="text" placeholder="Are you at the...?" data-key="d5-fp-2"></div></div>
+      <div class="ex-item"><div class="ex-num">3.</div><div class="ex-content"><p>...drinks tea and not coffee.</p><input type="text" placeholder="Do you drink...?" data-key="d5-fp-3"></div></div>
+      <div class="ex-item"><div class="ex-num">4.</div><div class="ex-content"><p>...is busy or tired today.</p><input type="text" placeholder="Are you...?" data-key="d5-fp-4"></div></div>
+      <div class="ex-item"><div class="ex-num">5.</div><div class="ex-content"><p>...studies English at night.</p><input type="text" placeholder="Do you study...?" data-key="d5-fp-5"></div></div>
+      <div class="ex-item"><div class="ex-num">6.</div><div class="ex-content"><p>...works long hours or overtime.</p><input type="text" placeholder="Do you work...?" data-key="d5-fp-6"></div></div>
+
+      <!-- PHASE 3 -->
+      <div class="mini-project-box" style="margin-top:20px">
+        <h4>📋 Phase 3 — Partner Audit Report</h4>
+        <p>Na aula, entreviste um colega com suas perguntas. Anote as respostas aqui e depois escreva o relatório final.</p>
+      </div>
+      <div class="exercise-label">Notas da entrevista — preencha na aula</div>
+      <div style="background:var(--gray);border-radius:8px;padding:16px;margin-bottom:16px">
+        <p style="font-size:0.85rem;margin-bottom:10px"><strong>My colleague:</strong> <input type="text" class="inline-input" placeholder="nome" data-key="d5-par-name" style="width:160px"></p>
+        <div class="ex-item"><div class="ex-num">1.</div><div class="ex-content"><input type="text" placeholder="resposta do colega" data-key="d5-par-1"></div></div>
+        <div class="ex-item"><div class="ex-num">2.</div><div class="ex-content"><input type="text" placeholder="resposta do colega" data-key="d5-par-2"></div></div>
+        <div class="ex-item"><div class="ex-num">3.</div><div class="ex-content"><input type="text" placeholder="resposta do colega" data-key="d5-par-3"></div></div>
+        <div class="ex-item"><div class="ex-num">4.</div><div class="ex-content"><input type="text" placeholder="resposta do colega" data-key="d5-par-4"></div></div>
+      </div>
+      <div class="exercise-label">Partner Audit Report — escreva o relatório</div>
+      <div class="callout callout-green"><strong>Template: </strong><span>"This is my colleague ___. You are a ___ and you are ___ today. You work at ___, you study ___ and you don't drink ___. Extra: ___"</span></div>
+      <textarea rows="4" data-key="d5-par-report" placeholder="This is my colleague ___. You are a ___ and you are ___ today. You work at ___, you study ___ and you don't drink ___. Extra information: ___"></textarea>
+
+      <!-- PHASE 4 -->
+      <div class="mini-project-box" style="margin-top:20px">
+        <h4>💬 Phase 4 — Follow-up Question Bank</h4>
+        <p>Prepare suas respostas para estas perguntas. Na aula, você vai fazer E responder estas perguntas com seus colegas.</p>
+      </div>
+      <div class="exercise-label">Prepare suas respostas antes da aula</div>
+      <div class="ex-item"><div class="ex-num">1.</div><div class="ex-content"><p>Are you on time for the class?</p><input type="text" placeholder="Yes, I am. / No, I'm not. I am ___." data-key="d5-qb-1"></div></div>
+      <div class="ex-item"><div class="ex-num">2.</div><div class="ex-content"><p>Who is your supervisor?</p><input type="text" placeholder="My supervisor is ___. He/She is ___." data-key="d5-qb-2"></div></div>
+      <div class="ex-item"><div class="ex-num">3.</div><div class="ex-content"><p>Who is your manager?</p><input type="text" placeholder="My manager is ___." data-key="d5-qb-3"></div></div>
+      <div class="ex-item"><div class="ex-num">4.</div><div class="ex-content"><p>What do you eat for lunch at the canteen?</p><input type="text" placeholder="I eat ___ for lunch." data-key="d5-qb-4"></div></div>
+      <div class="ex-item"><div class="ex-num">5.</div><div class="ex-content"><p>When do you have a coffee break with the team?</p><input type="text" placeholder="I have a coffee break at ___." data-key="d5-qb-5"></div></div>
+
+    </div>
+  </div>
+
+</div><!-- /day-5 -->
+
+</main>
+
+<!-- SAVE BAR -->
+<div class="save-bar">
+  <div class="save-info">Auto-salvo no navegador · <strong>Talk It Easy W5 · Bridge 1</strong></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn btn-outline" onclick="clearAll()">Limpar</button>
+    <button class="btn btn-pdf" onclick="exportPDF()">📥 Baixar com respostas</button>
+    <button class="btn btn-green" onclick="saveAll()">💾 Salvar</button>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'talkiteasy_w5';
+
+function showDay(n) {
+  document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('day-' + n).classList.add('active');
+  document.querySelectorAll('.tab-btn')[n - 1].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  saveAll();
+}
+
+function toggleScript(id) {
+  const box = document.getElementById(id);
+  box.classList.toggle('open');
+}
+
+function saveAll() {
+  const data = {};
+  document.querySelectorAll('[data-key]').forEach(el => {
+    data[el.dataset.key] = el.value;
+  });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function loadAll() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    document.querySelectorAll('[data-key]').forEach(el => {
+      if (data[el.dataset.key] !== undefined) el.value = data[el.dataset.key];
+    });
+  } catch(e) {}
+}
+
+function clearAll() {
+  if (!confirm('Tem certeza? Isso vai apagar TODAS as suas respostas.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  document.querySelectorAll('[data-key]').forEach(el => el.value = '');
+}
+
+function exportPDF() {
+  // Mostrar todos os painéis para impressão, depois restaurar
+  const panels = document.querySelectorAll('.day-panel');
+  const scripts = document.querySelectorAll('.script-box');
+
+  // Abrir todos os scripts para impressão
+  scripts.forEach(s => s.classList.add('open'));
+
+  // Mostrar todos os painéis
+  panels.forEach(p => p.style.display = 'block');
+
+  window.print();
+
+  // Restaurar estado original após impressão
+  setTimeout(() => {
+    panels.forEach((p, i) => {
+      p.style.display = i === 0 ? 'block' : 'none';
+    });
+    // Restaurar painel ativo
+    const activeIdx = Array.from(document.querySelectorAll('.tab-btn')).findIndex(b => b.classList.contains('active'));
+    panels.forEach((p, i) => p.style.display = i === activeIdx ? 'block' : 'none');
+    scripts.forEach(s => s.classList.remove('open'));
+  }, 1000);
+}
+
+// Auto-save on input
+document.querySelectorAll('[data-key]').forEach(el => {
+  el.addEventListener('input', () => saveAll());
+});
+
+loadAll();
+</script>
+</body>
+</html>
